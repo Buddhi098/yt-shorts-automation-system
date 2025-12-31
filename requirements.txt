@@ -1,0 +1,50 @@
+# ===============================
+# Core Python Utilities
+# ===============================
+python-dotenv==1.0.1
+pydantic==2.10.4
+typing-extensions==4.12.2
+dataclasses-json==0.6.7
+
+# ===============================
+# AI / LLM (LangChain + OpenAI)
+# ===============================
+langchain==1.2.0
+langchain-openai==1.1.6
+langchain-text-splitters==1.1.0  # Updated to be compatible with core 1.x
+openai==1.109.1
+tiktoken==0.8.0
+
+# ===============================
+# Video & Media Processing
+# ===============================
+moviepy==2.2.1
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+numpy==2.2.1
+Pillow==11.0.0
+
+# ===============================
+# Audio Processing
+# ===============================
+pydub==0.25.1
+
+# ===============================
+# Google / YouTube API
+# ===============================
+google-api-python-client==2.156.0
+google-auth==2.37.0
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0
+httplib2==0.22.0
+
+# ===============================
+# Logging & Utilities
+# ===============================
+tqdm==4.67.1
+rich==13.9.4
+
+# ===============================
+# Optional (Recommended)
+# ===============================
+ffmpeg-python==0.2.0
