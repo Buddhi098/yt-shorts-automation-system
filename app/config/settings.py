@@ -3,20 +3,84 @@ import logging
 import os
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
+from pathlib import Path
+import datetime
+
 load_dotenv()
 
 # -----------------------------
 # Base Directories
 # -----------------------------
 BASE_DIR: Path = Path(__file__).resolve().parents[2]
+YOUTUBE_SECRET_DIR: Path = BASE_DIR / "youtube_secret"
 ASSETS_DIR: Path = BASE_DIR / "assets"
+LOGOS_DIR: Path = ASSETS_DIR / "logo"
+MUSICS_DIR: Path = ASSETS_DIR / "musics"
+VIDEOS_DIR: Path = ASSETS_DIR / "videos"
+
 DATA_DIR: Path = BASE_DIR / "data"
 DATA_GENERATED_DIR: Path = DATA_DIR / "generated"
+REELS_DIR: Path = DATA_GENERATED_DIR / "reels"
+UPLOADED_REELS_DIR: Path = DATA_DIR / "uploaded_reels"
+
+# ... Your path definitions ...
+directories = [
+    YOUTUBE_SECRET_DIR,
+    ASSETS_DIR,
+    LOGOS_DIR,
+    MUSICS_DIR,
+    VIDEOS_DIR,
+    DATA_DIR,
+    DATA_GENERATED_DIR,
+    REELS_DIR,
+    UPLOADED_REELS_DIR
+]
+
+def create_project_structure(dir_list: list[Path]):
+    for directory in dir_list:
+        directory.mkdir(parents=True, exist_ok=True)
+        print(f"Verified directory: {directory.relative_to(BASE_DIR)}")
+
+# Execute the setup
+create_project_structure(directories)
 
 # -----------------------------
 # Logging Configuration
 # -----------------------------
 LOG_LEVEL = logging.DEBUG if os.getenv("ENV") == "development" else logging.INFO
+
+# -----------------------------
+# YouTube / Upload Settings
+# -----------------------------
+@dataclass
+class YouTubeConfig:
+    # API & Authentication
+    scopes: list[str] = field(default_factory=lambda: ["https://www.googleapis.com/auth/youtube.upload"])
+    client_secrets_file: Path = BASE_DIR / "youtube_secret/secret.json"
+    token_file: Path = BASE_DIR / "youtube_secret/token.pickle"
+
+    # Video folder paths
+    video_folder: Path = REELS_DIR
+    uploaded_reels_path: Path = UPLOADED_REELS_DIR
+    last_upload_file: Path = DATA_DIR / "last_upload_time.txt"
+
+    # Scheduling
+    publish_times_sri_lanka: list = field(
+        default_factory=lambda: [
+            # 24h format
+            datetime.time(6, 0),
+            datetime.time(13, 0),
+            datetime.time(18, 0),
+            datetime.time(21, 0)
+        ]
+    )
+    timezone_offset: float = 5.5  # Sri Lanka UTC+5:30
+
+    # Default tags
+    default_tags: list[str] = field(
+        default_factory=lambda: ["shorts", "youtube shorts", "motivation", "luxury lifestyle", "inspiration"]
+    )
+
 
 # -----------------------------
 # Video Generation Settings
@@ -73,9 +137,10 @@ class Settings:
     assets_dir: Path = ASSETS_DIR
     data_dir: Path = DATA_DIR
     log_level: int = LOG_LEVEL
-    ai: AISettings = field(default_factory=AISettings)         # ✅ Use default_factory
-    files: FileSettings = field(default_factory=FileSettings)  # ✅ Use default_factory
-    video: VideoConfig = field(default_factory=VideoConfig)    # ✅ Use default_factory
+    ai: AISettings = field(default_factory=AISettings)         
+    files: FileSettings = field(default_factory=FileSettings)
+    video: VideoConfig = field(default_factory=VideoConfig) 
+    youtube: YouTubeConfig = field(default_factory=YouTubeConfig)
 
 # Singleton instance for use across the project
 settings = Settings()

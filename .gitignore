@@ -31,7 +31,8 @@ assets/logo
 assets/musics
 assets/videos
 data/generated/reels
-data/uploaded
+data/uploaded_reels
+youtube_secret
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
