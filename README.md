@@ -55,6 +55,37 @@ pip install -r requirements.txt
 
 ---
 
+## ⚙️ Configuration
+
+All application settings are centralized in the app/config/settings.py module. You can modify these configurations as needed.
+
+### 📺 YouTube Settings
+- **OAuth Scope**: `youtube.upload`
+- **Client Secrets**: `youtube_secret/secret.json`
+- **Token File**: `youtube_secret/token.pickle`
+- **Publish Times (UTC +5:30)**: `06:00`, `13:00`, `18:00`, `21:00`
+- **Default Tags**: shorts, motivation, inspiration
+
+### 🎞️ Video Settings
+- **Resolution**: `1080 × 1920` (Vertical)
+- **FPS**: `30`
+- **Duration**: `2.0s`
+- **GPU Acceleration**: `h264_nvenc`
+- **Fade Duration**: `0.3s`
+- **Overlay Opacity**: `0.6`
+
+### 🤖 AI Settings
+- **Model**: `gpt-4o`
+- **Temperature**: `0.5`
+- **Responses**: `1`
+- **API Key**: Loaded from `OPENAI_API_KEY`
+
+### 📂 File & Paths
+- **Assets**: `assets/`
+- **Generated Reels**: `data/generated/reels/`
+- **Uploaded Reels**: `data/uploaded_reels/`
+- **Logs**: `logs/`
+
 ## 🔧 Setup Instructions
 
 ### 1. Media Preparation

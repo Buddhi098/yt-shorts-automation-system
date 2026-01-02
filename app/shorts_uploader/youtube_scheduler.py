@@ -38,9 +38,7 @@ class YouTubeScheduler:
         # Ensure uploaded folder exists
         self.uploaded_reels_path.mkdir(parents=True, exist_ok=True)
 
-    # -------------------------------------------------
     # Core workflow steps
-    # -------------------------------------------------
     def load_videos(self):
         if not self.content_file.exists():
             self.logger.error("Content file not found: %s", self.content_file)
@@ -110,9 +108,7 @@ class YouTubeScheduler:
             "Last upload time saved: %s", publish_schedule[-1]
         )
 
-    # -------------------------------------------------
-    # 🧹 Post-upload cleanup
-    # -------------------------------------------------
+    # Post-upload cleanup
     def cleanup_after_upload(self):
         """
         Move generated reels to uploaded folder
@@ -140,9 +136,7 @@ class YouTubeScheduler:
             "Cleanup complete: %d videos moved.", moved_files
         )
 
-    # -------------------------------------------------
     # Entry point
-    # -------------------------------------------------
     def run(self):
         """
         Execute the full scheduling workflow.

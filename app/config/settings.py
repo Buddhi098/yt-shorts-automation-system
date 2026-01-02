@@ -8,9 +8,7 @@ from app.utils.logger import SingletonLogger
 
 load_dotenv()
 
-# -----------------------------
 # Base Directories
-# -----------------------------
 BASE_DIR: Path = Path(__file__).resolve().parents[2]
 YOUTUBE_SECRET_DIR: Path = BASE_DIR / "youtube_secret"
 LOGS_DIR = BASE_DIR / "logs"
@@ -24,7 +22,6 @@ DATA_GENERATED_DIR: Path = DATA_DIR / "generated"
 REELS_DIR: Path = DATA_GENERATED_DIR / "reels"
 UPLOADED_REELS_DIR: Path = DATA_DIR / "uploaded_reels"
 
-# ... Your path definitions ...
 directories = [
     LOGS_DIR,
     YOUTUBE_SECRET_DIR,
@@ -38,9 +35,7 @@ directories = [
     UPLOADED_REELS_DIR
 ]
 
-# -----------------------------
 # Logging Configuration
-# -----------------------------
 LOG_LEVEL = logging.DEBUG if os.getenv("ENV") == "development" else logging.INFO
 log_dir = Path("logs")
 logger = SingletonLogger(name=__name__, log_level=LOG_LEVEL, log_dir=log_dir).get_logger()
@@ -53,9 +48,7 @@ def create_project_structure(dir_list: list[Path]):
 # Execute the setup
 create_project_structure(directories)
 
-# -----------------------------
 # YouTube / Upload Settings
-# -----------------------------
 @dataclass
 class YouTubeConfig:
     # API & Authentication
@@ -68,7 +61,7 @@ class YouTubeConfig:
     uploaded_reels_path: Path = UPLOADED_REELS_DIR
     last_upload_file: Path = DATA_DIR / "last_upload_time.txt"
 
-    # Scheduling
+    # Scheduling times
     publish_times_sri_lanka: list = field(
         default_factory=lambda: [
             datetime.time(6, 0),
@@ -84,9 +77,7 @@ class YouTubeConfig:
         default_factory=lambda: ["shorts", "youtube shorts", "motivation", "luxury lifestyle", "inspiration"]
     )
 
-# -----------------------------
 # Video Generation Settings
-# -----------------------------
 @dataclass
 class VideoConfig:
     target_width: int = 1080
@@ -108,9 +99,7 @@ class VideoConfig:
     music_volume: float = 1
     fade_duration_clip: float = 0.3
 
-# -----------------------------
 # AI / OpenAI Settings
-# -----------------------------
 @dataclass
 class AISettings:
     model: str = "gpt-4o"
@@ -118,9 +107,7 @@ class AISettings:
     num_responses: int = 1
     api_key: str = os.getenv("OPENAI_API_KEY")
 
-# -----------------------------
-# File / Output Settings
-# -----------------------------
+# File Output Settings
 @dataclass
 class FileSettings:
     motivational_output: Path = DATA_GENERATED_DIR / "motivational_content.json"
@@ -130,9 +117,7 @@ class FileSettings:
     generated_reel_file: Path = DATA_GENERATED_DIR / "reels"
     font: Path = ASSETS_DIR / "fonts" / "NotoSerifDisplay_Condensed-Medium.ttf"
 
-# -----------------------------
 # Global Settings Container
-# -----------------------------
 @dataclass
 class Settings:
     base_dir: Path = BASE_DIR

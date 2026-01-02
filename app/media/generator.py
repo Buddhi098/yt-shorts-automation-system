@@ -35,11 +35,11 @@ class VideoGenerator:
         """
         Path(output_folder).mkdir(exist_ok=True)
 
-        # 1️⃣ Select and trim video clips
+        # Select and trim video clips
         clips = self.processor.select_random_videos(videos_folder, len(quotes))
         trimmed_clips = [self.processor.trim_random_clip(c) for c in clips]
 
-        # 2️⃣ Merge clips with motivational text
+        # Merge clips with motivational text
         color_set = random.choice(self.processor.color_sets)
         merged_clip = self.processor.merge_videos_with_text(trimmed_clips, quotes, color_set)
 
@@ -48,19 +48,19 @@ class VideoGenerator:
             self.utils.cleanup_clips(clips + trimmed_clips)
             return False
 
-        # 3️⃣ Generate hook clip and prepend
+        # Generate hook clip and prepend
         hook_clip = self.processor.generate_hook_clip(color_set)
         final_clip = concatenate_videoclips([hook_clip, merged_clip], method="compose") if hook_clip else merged_clip
 
-        # 4️⃣ Add background music
+        # Add background music
         audio_clip = self.processor.get_random_music(music_folder)
         if audio_clip:
             final_clip = self.processor.add_music_to_video(final_clip, audio_clip)
 
-        # 5️⃣ Add logo overlay
+        # Add logo overlay
         final_clip = self.processor.add_logo_to_video(final_clip, logo_path)
 
-        # 6️⃣ Write output video
+        # Write output video
         output_path = Path(output_folder) / f"reel_{output_index}.mp4"
         try:
             final_clip.write_videofile(str(output_path), fps=self.config.fps)
@@ -71,7 +71,7 @@ class VideoGenerator:
                 audio_clip.close()
             return False
 
-        # 7️⃣ Cleanup resources
+        # Cleanup resources
         self.utils.cleanup_clips([final_clip] + trimmed_clips + clips)
         if audio_clip:
             audio_clip.close()
