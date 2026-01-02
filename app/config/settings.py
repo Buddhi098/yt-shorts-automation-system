@@ -3,8 +3,8 @@ import logging
 import os
 from dataclasses import dataclass, field
 from dotenv import load_dotenv
-from pathlib import Path
 import datetime
+from app.utils.logger import SingletonLogger
 
 load_dotenv()
 
@@ -13,6 +13,7 @@ load_dotenv()
 # -----------------------------
 BASE_DIR: Path = Path(__file__).resolve().parents[2]
 YOUTUBE_SECRET_DIR: Path = BASE_DIR / "youtube_secret"
+LOGS_DIR = BASE_DIR / "logs"
 ASSETS_DIR: Path = BASE_DIR / "assets"
 LOGOS_DIR: Path = ASSETS_DIR / "logo"
 MUSICS_DIR: Path = ASSETS_DIR / "musics"
@@ -25,6 +26,7 @@ UPLOADED_REELS_DIR: Path = DATA_DIR / "uploaded_reels"
 
 # ... Your path definitions ...
 directories = [
+    LOGS_DIR,
     YOUTUBE_SECRET_DIR,
     ASSETS_DIR,
     LOGOS_DIR,
@@ -36,18 +38,20 @@ directories = [
     UPLOADED_REELS_DIR
 ]
 
-def create_project_structure(dir_list: list[Path]):
-    for directory in dir_list:
-        directory.mkdir(parents=True, exist_ok=True)
-        print(f"Verified directory: {directory.relative_to(BASE_DIR)}")
-
-# Execute the setup
-create_project_structure(directories)
-
 # -----------------------------
 # Logging Configuration
 # -----------------------------
 LOG_LEVEL = logging.DEBUG if os.getenv("ENV") == "development" else logging.INFO
+log_dir = Path("logs")
+logger = SingletonLogger(name=__name__, log_level=LOG_LEVEL, log_dir=log_dir).get_logger()
+
+def create_project_structure(dir_list: list[Path]):
+    for directory in dir_list:
+        directory.mkdir(parents=True, exist_ok=True)
+        logger.info(f"Verified directory: {directory.relative_to(BASE_DIR)}")
+
+# Execute the setup
+create_project_structure(directories)
 
 # -----------------------------
 # YouTube / Upload Settings
@@ -67,7 +71,6 @@ class YouTubeConfig:
     # Scheduling
     publish_times_sri_lanka: list = field(
         default_factory=lambda: [
-            # 24h format
             datetime.time(6, 0),
             datetime.time(13, 0),
             datetime.time(18, 0),
@@ -80,7 +83,6 @@ class YouTubeConfig:
     default_tags: list[str] = field(
         default_factory=lambda: ["shorts", "youtube shorts", "motivation", "luxury lifestyle", "inspiration"]
     )
-
 
 # -----------------------------
 # Video Generation Settings
