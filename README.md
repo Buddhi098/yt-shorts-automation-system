@@ -140,7 +140,7 @@ python run_pipeline.py
 
 ## 📄 License
 
-Educational use only.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ---
 
